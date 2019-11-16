@@ -1,0 +1,36 @@
+//Lucas Gabriel Alves Buriti de Sousa - turma 01B 46M12//
+
+let x =200;
+let y =350;
+let xi =200
+function setup() { 
+createCanvas(400, 400); 
+}
+
+function draw() { 
+background(210);
+
+  if (keyIsDown(LEFT_ARROW)&& x >= 40) {
+    x -= 5;
+  }
+
+  if (keyIsDown(RIGHT_ARROW)&& x <= 380) {
+    x += 5;
+  }
+
+  if (keyIsDown(UP_ARROW)&& y >= 30) {
+    y -= 5;
+  }
+
+  if (keyIsDown(DOWN_ARROW)&& y <= 370) {
+    y += 5;
+  }
+  
+ellipse(x, y, 100, 50) 
+rect(xi, 50, 80, 80)
+  xi = xi + 5
+  
+  if (xi>400){
+    xi = 0
+  }
+}
