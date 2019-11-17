@@ -1,0 +1,141 @@
+//variáveis
+var x = 50;
+var y = 50;
+var xd = 0;
+var yd = 0;
+var estadoDisparo = false;
+var vida = 5;
+var pontos = 0;
+var nivel = 1;
+var barreiraPontos = 10
+var raioPlayer = 20;
+var numObjetos = 20;
+var vetx0 = [];
+var vety0 = [];
+var tela = 1
+
+//Objetos em tela
+function setup() {
+  createCanvas(500, 500);
+
+for(var i = 0; i < numObjetos; i++){
+    vetx0[i] = random(0,300);
+    vety0[i] = -random(0,700);
+  }
+}
+
+function draw() {
+  //Inicio (Tela 1)
+  if (tela == 1) {
+    background(0);
+    textSize(20);
+    fill(255, 255, 0);
+    text('PROJETO JOGO LOP', 140, 200);
+    fill(255, 255, 255);
+    text('Aperte Enter para iniciar', 135, 350);
+    if (keyIsDown(ENTER)) {
+      tela = 2;
+    }
+}
+if(tela == 2){
+  background(0)
+//Jogador principal
+ellipse(x,y, 2*raioPlayer,2*raioPlayer);
+  
+//Controles e movimentos
+if(keyIsDown(LEFT_ARROW) && x >= 30){
+    x -= 5;
+  }
+if(keyIsDown(RIGHT_ARROW) && x <= 470){
+    x += 5;
+  }
+if(keyIsDown(UP_ARROW) && y >= 30){
+    y -= 5;
+  }
+if(keyIsDown(DOWN_ARROW) && y <= 470){
+    y += 5;
+  }
+  
+//Disparo
+if(keyIsDown(CONTROL) && estadoDisparo == false){
+    xd = x;
+    yd = y;
+    estadoDisparo = true;
+  }
+if(estadoDisparo){
+    ellipse(xd,yd - 10,2,40);
+    yd -= 5;
+    if(yd < 0){
+      estadoDisparo = false
+    }
+  }
+  
+//HUD
+fill(1000, 1000, 1000);
+textSize(25);
+text("Vidas:" + vida, 10, 30);
+text("Pontuação:" + pontos, 200, 30);
+text("Nivel:" + nivel, 400, 30);
+  
+//Avanço nos níveis
+if(pontos > barreiraPontos && nivel <= 5){
+    barreiraPontos += 7;
+    nivel++;
+    numObjetos += 2
+  
+//Objetos em tela
+for(var i = 0; i < numObjetos; i++){
+      vetx0[i] = random(0,300);
+      vety0[i] = -random(0,700);
+    }
+  }
+  
+  
+  
+for(var i = 0; i < numObjetos; i++){
+      ellipse(vetx0[i],vety0[i], 20, 20)
+    }
+
+for(var i = 0; i < numObjetos; i++){
+      vety0[i] += 1;
+    }
+  
+//Vida
+for(var i = 0; i < numObjetos; i++){
+    if(dist(x,y,vetx0[i],vety0[i]) < raioPlayer + 10){
+      vida--;
+      vetx0[i] = 600;
+    }
+  }
+  if(vida == 0){
+    tela = 3
+  }
+  
+//Pontuação do jogador
+for(var i = 0; i < numObjetos; i++){
+    if(dist(xd,yd,vetx0[i],vety0[i]) < 32){
+      pontos++;
+      vetx0[i] = 1000;
+      estadoDisparo = false;
+    }
+  }
+}
+if(tela == 3){
+      background(0);
+      textSize(20);
+      fill(255, 0, 0);
+      text('TENTE NOVAMENTE', 140, 100);
+      fill(255, 255, 255)
+      text('Aperte Enter para jogar novamente', 100, 350);
+      text('Vidas: ' + vida, 160, 195);
+      text('Pontos: ' + pontos, 160, 220);
+      text('Nível: ' + nivel, 160, 245);
+  if(keyIsDown(ENTER)){
+    pontos = 0
+    vida = 5
+    nivel = 1
+    tela = 2
+}
+}
+}
+
